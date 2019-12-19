@@ -3,7 +3,7 @@
 using namespace std;
 using namespace joshtrick;
 
-
+// ********PUBLIC********
 Timer::Timer(const string name)
 {
   this->proc_name = name;
@@ -54,6 +54,7 @@ void Timer::toc()
   clock_gettime(CLOCK_REALTIME, &this->t_end);
 }
 
+
 void Timer::diff()
 {
   if((this->t_end.tv_nsec - this->t_start.tv_nsec) < 0)
@@ -67,19 +68,15 @@ void Timer::diff()
     this->t_diff.tv_nsec = this->t_end.tv_nsec - this->t_start.tv_nsec;
   }
 
-  float current_time = this->t_diff.tv_sec * 1e3 + this->t_diff.tv_nsec / 1e6;
+  float current_time = this->t_diff.tv_sec * 1e6 + this->t_diff.tv_nsec / 1e3;
   this->time += current_time;
   this->counter += 1;
-  cout << "[Timer] " << this->proc_name
-    << " instant [" << this->counter <<"]: "
-    << current_time << " ms" << endl;
+  print_time(" instant [", current_time);
 }
 
 void Timer::sum()
 {
-  cout << "[Timer] " << this->proc_name
-    << " total   [" << this->counter << "]: "
-    << this->time << " ms" << endl;
+  print_time(" total   [", this->time);
 }
 
 void Timer::avg()
@@ -89,7 +86,28 @@ void Timer::avg()
   {
     avg_time = time / counter;
   }
-  cout << "[Timer] " << this->proc_name
-    << " average [" << this->counter << "]: "
-    << avg_time << " ms" << endl;
+  print_time(" average [", avg_time);
+}
+
+// ********PRIVATE********
+void Timer::print_time(const string info, const float time)
+{
+  if(time < 1e3)
+  {
+    cout << "[Timer] " << this->proc_name
+      << info << this->counter <<"]: "
+      << time << " us" << endl;
+  }
+  else if(time < 1e6)
+  {
+    cout << "[Timer] " << this->proc_name
+      << info << this->counter <<"]: "
+      << time / 1e3 << " ms" << endl;
+  }
+  else
+  {
+    cout << "[Timer] " << this->proc_name
+      << info << this->counter <<"]: "
+      << time / 1e6 << " s" << endl;
+  }
 }

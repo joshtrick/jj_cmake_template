@@ -13,15 +13,32 @@ int main()
   std::cout << MSG_TAG
     << "Hello Joshtrick"
     << std::endl;
-  for(int i = 1; i < 5; i++)
-  {
-    global_timer.tic();
-    global_timer.toc();
-    global_timer.diff();
-    global_timer.sum();
-    global_timer.avg();
-    std::cout << std::endl;
-  }
+  global_timer.tic();
+  usleep(1);
+  global_timer.toc();
+  global_timer.diff();
+  std::cout << std::endl;
+
+  global_timer.tic();
+  usleep(1000);
+  global_timer.toc();
+  global_timer.diff();
+  std::cout << std::endl;
+
+  global_timer.tic();
+  usleep(1000000);
+  global_timer.toc();
+  global_timer.diff();
+  std::cout << std::endl;
+
+  global_timer.tic();
+  usleep(10000000);
+  global_timer.toc();
+  global_timer.diff();
+  global_timer.sum();
+  global_timer.avg();
+  std::cout << std::endl;
+
   return 0;
 }
 
