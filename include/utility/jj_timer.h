@@ -14,14 +14,17 @@ namespace joshtrick
   public:
     Timer(const std::string name);
     Timer();
+    void reset(const std::string name);
+    void reset();
     void tic();
-    float toc();
+    void toc();
+    void diff();
+    void sum();
+    void avg();
   private:
     std::string proc_name;
-    long time_ms, time_us, time_ns, dt_ns;
-    time_t time_s, dt_s;
-    float time;
-    timespec t_start, t_end;
+    float time, counter;
+    timespec t_start, t_end, t_diff;
   };
 } //namespace joshtrick
 

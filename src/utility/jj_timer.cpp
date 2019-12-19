@@ -1,48 +1,95 @@
 #include "utility/jj_timer.h"
 
 using namespace std;
-//using namespace joshtrick;
+using namespace joshtrick;
 
-joshtrick::Timer::Timer(const string name)
+
+Timer::Timer(const string name)
 {
-  proc_name = name;
+  this->proc_name = name;
+  this->counter = 0;
+  this->time = 0;
 }
 
-joshtrick::Timer::Timer()
+Timer::Timer()
 {
-  proc_name = "Execucation";
+  this->proc_name = "Execucation";
+  this->counter = 0;
+  this->time = 0;
 }
 
-void joshtrick::Timer::tic()
+void Timer::reset(const string name)
 {
-  clock_gettime(CLOCK_REALTIME, &t_start);
+  this->proc_name = name;
+  this->counter = 0;
+  this->time = 0;
+  this->t_start.tv_nsec = 0;
+  this->t_start.tv_sec = 0;
+  this->t_end.tv_nsec = 0;
+  this->t_end.tv_sec = 0;
+  this->t_diff.tv_nsec = 0;
+  this->t_diff.tv_sec = 0;
 }
 
-float joshtrick::Timer::toc()
+void Timer::reset()
 {
-  clock_gettime(CLOCK_REALTIME, &t_end);
-  dt_s = t_end.tv_sec-t_start.tv_sec;
-  dt_ns = t_end.tv_nsec-t_start.tv_nsec;
-  time = dt_s+dt_ns/1e9;
-  if(dt_ns < 0)
+  this->proc_name = "Execucation";
+  this->counter = 0;
+  this->time = 0;
+  this->t_start.tv_nsec = 0;
+  this->t_start.tv_sec = 0;
+  this->t_end.tv_nsec = 0;
+  this->t_end.tv_sec = 0;
+  this->t_diff.tv_nsec = 0;
+  this->t_diff.tv_sec = 0;
+}
+
+void Timer::tic()
+{
+  clock_gettime(CLOCK_REALTIME, &this->t_start);
+}
+
+void Timer::toc()
+{
+  clock_gettime(CLOCK_REALTIME, &this->t_end);
+}
+
+void Timer::diff()
+{
+  if((this->t_end.tv_nsec - this->t_start.tv_nsec) < 0)
   {
-    time_s = dt_s-1;
-    time_ms = dt_ns/1e6+1e3;
-    time_us = dt_ns/1e3+1e6-time_ms*1e3;
-    time_ns = dt_ns+1e9-time_us*1e3-time_ms*1e6;
+    this->t_diff.tv_sec = this->t_end.tv_sec - this->t_start.tv_sec-1;
+    this->t_diff.tv_nsec = 1e9 + this->t_end.tv_nsec - this->t_start.tv_nsec;
   }
   else
   {
-    time_s = dt_s;
-    time_ms = dt_ns/1e6;
-    time_us = dt_ns/1e3-time_ms*1e3;
-    time_ns = dt_ns-time_us*1e3-time_ms*1e6;
+    this->t_diff.tv_sec = this->t_end.tv_sec - this->t_start.tv_sec;
+    this->t_diff.tv_nsec = this->t_end.tv_nsec - this->t_start.tv_nsec;
   }
-  cout << "[Speed Test] "
-    << proc_name << " time: "
-    << time_s << " s, "
-    << time_ms << " ms, "
-    << time_us <<" us, "
-    << time_ns << " ns." << endl;
-  return time;
+
+  float current_time = this->t_diff.tv_sec * 1e3 + this->t_diff.tv_nsec / 1e6;
+  this->time += current_time;
+  this->counter += 1;
+  cout << "[Timer] " << this->proc_name
+    << " instant [" << this->counter <<"]: "
+    << current_time << " ms" << endl;
+}
+
+void Timer::sum()
+{
+  cout << "[Timer] " << this->proc_name
+    << " total   [" << this->counter << "]: "
+    << this->time << " ms" << endl;
+}
+
+void Timer::avg()
+{
+  float avg_time = 0;
+  if(this->counter > 0)
+  {
+    avg_time = time / counter;
+  }
+  cout << "[Timer] " << this->proc_name
+    << " average [" << this->counter << "]: "
+    << avg_time << " ms" << endl;
 }
