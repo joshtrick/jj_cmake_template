@@ -5,7 +5,7 @@
 
 int main()
 {
-    ProcTimer global_timer("msn");
+  joshtrick::Timer global_timer("msn");
     global_timer.tic();
     global_timer.toc();
 

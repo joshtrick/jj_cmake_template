@@ -7,20 +7,22 @@
 #include <unistd.h>
 #include <time.h>
 
-class ProcTimer
+namespace joshtrick
 {
-public:
-    ProcTimer(std::string name);
-    ProcTimer();
+  class Timer
+  {
+  public:
+    Timer(const std::string name);
+    Timer();
     void tic();
     float toc();
-private:
+  private:
     std::string proc_name;
     long time_ms, time_us, time_ns, dt_ns;
     time_t time_s, dt_s;
     float time;
     timespec t_start, t_end;
-};
-
+  };
+} //namespace joshtrick
 
 #endif //JJ_TIMER_H
