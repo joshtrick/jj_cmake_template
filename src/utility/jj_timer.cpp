@@ -65,23 +65,23 @@ void Timer::calculate()
 }
 
 
-void Timer::instant()
+float Timer::instant()
 {
-  print_time(" instant [", this->instant_time);
+  return print_time(" instant [", this->instant_time);
 }
 
-void Timer::average()
+float Timer::average()
 {
-  print_time(" average [", this->average_time);
+  return print_time(" average [", this->average_time);
 }
 
-void Timer::total()
+float Timer::total()
 {
-  print_time(" total   [", this->total_time);
+  return print_time(" total   [", this->total_time);
 }
 
 // ********PRIVATE********
-void Timer::print_time(const string info, const float time)
+float Timer::print_time(const string info, const float time)
 {
   // in microsecond
   if(time < 1e3)
@@ -125,4 +125,5 @@ void Timer::print_time(const string info, const float time)
       << info << this->counter <<"]: "
       << time / 864e8 << " d" << endl;
   }
+  return time;
 }

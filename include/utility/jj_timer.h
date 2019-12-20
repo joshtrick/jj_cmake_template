@@ -19,14 +19,14 @@ namespace joshtrick
     void tic();
     void toc();
     void calculate();
-    void instant();
-    void average();
-    void total();
+    float instant();
+    float average();
+    float total();
   private:
     std::string proc_name;
     float instant_time, total_time, average_time, counter;
     timespec t_start, t_end, t_diff;
-    void print_time(const std::string info, const float time);
+    float print_time(const std::string info, const float time);
   };
 } //namespace joshtrick
 
