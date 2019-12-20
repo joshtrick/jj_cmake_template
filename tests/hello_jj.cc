@@ -8,36 +8,22 @@
 
 int main()
 {
-  joshtrick::Timer global_timer("Loop_0");
+  joshtrick::Timer global_timer("Testing loop");
   print_joshtrick();
   std::cout << MSG_TAG
     << "Hello Joshtrick"
     << std::endl;
+  while(true)
+  {
   global_timer.tic();
-  usleep(1);
+  sleep(10);
   global_timer.toc();
-  global_timer.diff();
+  global_timer.calculate();
+  global_timer.instant();
+  global_timer.average();
+  global_timer.total();
   std::cout << std::endl;
-
-  global_timer.tic();
-  usleep(1000);
-  global_timer.toc();
-  global_timer.diff();
-  std::cout << std::endl;
-
-  global_timer.tic();
-  usleep(1000000);
-  global_timer.toc();
-  global_timer.diff();
-  std::cout << std::endl;
-
-  global_timer.tic();
-  usleep(10000000);
-  global_timer.toc();
-  global_timer.diff();
-  global_timer.sum();
-  global_timer.avg();
-  std::cout << std::endl;
+  }
 
   return 0;
 }
